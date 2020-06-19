@@ -23,13 +23,13 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
 
 RUN wget https://ubuntu.bigbluebutton.org/repo/bigbluebutton.asc -O- | sudo apt-key add - && \
     echo "deb https://ubuntu.bigbluebutton.org/xenial-22/ bigbluebutton-xenial main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list && \
-	sudo apt-get update
+	sudo apt-get update && \
+    sudo apt-get dist-upgrade
 
-#Install BigBlueButton
-# Install Tomcat prior to bbb installation
 RUN sudo apt-get install bigbluebutton 
-RUN sudo apt-get install bbb-html5
-RUN sudo apt-get dist-upgrade
+RUN sudo apt-get install bbb-html5 && \
+sudo apt-get update && \
+ sudo apt-get dist-upgrade
 
 
 ENTRYPOINT ["/lib/systemd/systemd"]
