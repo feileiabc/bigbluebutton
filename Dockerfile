@@ -25,10 +25,7 @@ RUN wget https://ubuntu.bigbluebutton.org/repo/bigbluebutton.asc -O- | sudo apt-
     echo "deb https://ubuntu.bigbluebutton.org/xenial-22/ bigbluebutton-xenial main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list && \
 	sudo apt-get update
 
-RUN sudo apt-get install bigbluebutton -y
-RUN sudo apt-get install bbb-html5 -y
+RUN sudo apt-get install bigbluebutton -Y
+RUN sudo apt-get install bbb-html5 -Y
 
 
-ENTRYPOINT ["/lib/systemd/systemd"]
-CMD ["/bin/bash", "-c", "exec /sbin/init --log-target=journal 3>&1"]
-#CMD ["/run.sh"]
