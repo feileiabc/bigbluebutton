@@ -1,15 +1,37 @@
 FROM ubuntu:16.04
-ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
-ENV container docker
-ENV init /lib/systemd/systemd
 
+RUN  sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 RUN apt-get -y update && \
     apt-get install -y language-pack-en vim wget systemd net-tools software-properties-common \
                        sudo apt-transport-https && \
     update-locale LANG=en_US.UTF-8 && \
     dpkg-reconfigure locales
-RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ xenial multiverse" | tee -a /etc/apt/sources.list && \
-    apt-get -y update && \
-    apt-get -y dist-upgrade
-RUN wget -vO- https://ubuntu.bigbluebutton.org/bbb-install.sh | bash -s -- -w -v xenial-22 -a -w
+RUN  echo "deb http://archive.ubuntu.com/ubuntu/ xenial multiverse" | sudo tee -a /etc/apt/sources.list && \
+    sudo apt-get install haveged && \
+    sudo add-apt-repository ppa:bigbluebutton/support -y && \
+    sudo add-apt-repository ppa:rmescandon/yq -y && \
+    sudo apt-get update && \
+    sudo apt-get dist-upgrade
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-3.4.asc | sudo apt-key add - && \
+    echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list &&\
+    sudo apt-get update && \
+    sudo apt-get install -y mongodb-org curl
+	
+RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
+    sudo apt-get install -y nodejs
+
+RUN wget https://ubuntu.bigbluebutton.org/repo/bigbluebutton.asc -O- | sudo apt-key add - && \
+    echo "deb https://ubuntu.bigbluebutton.org/xenial-22/ bigbluebutton-xenial main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list && \
+	sudo apt-get update
+
+#Install BigBlueButton
+# Install Tomcat prior to bbb installation
+RUN sudo apt-get install bigbluebutton 
+RUN sudo apt-get install bbb-html5
+RUN sudo apt-get dist-upgrade
+
+
+ENTRYPOINT ["/lib/systemd/systemd"]
+CMD ["/bin/bash", "-c", "exec /sbin/init --log-target=journal 3>&1"]
+#CMD ["/run.sh"]
