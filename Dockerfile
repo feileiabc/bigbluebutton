@@ -23,9 +23,9 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
 
 RUN wget https://ubuntu.bigbluebutton.org/repo/bigbluebutton.asc -O- | sudo apt-key add - && \
     echo "deb https://ubuntu.bigbluebutton.org/xenial-22/ bigbluebutton-xenial main" | sudo tee /etc/apt/sources.list.d/bigbluebutton.list && \
-	sudo apt-get update
+	sudo apt-get  -y update
 
-RUN sudo apt-get install bigbluebutton -Y
-RUN sudo apt-get install bbb-html5 -Y
+RUN sudo apt-get install  -y bigbluebutton
+RUN sudo apt-get install  -y bbb-html5
 
 
