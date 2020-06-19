@@ -15,3 +15,5 @@ RUN wget https://ubuntu.bigbluebutton.org/repo/bigbluebutton.asc -O- | sudo apt-
 RUN sudo apt-get install --reinstall -d `apt-cache depends bigbluebutton | grep depends | cut -d: f2 |tr -d "<>"`
 RUN sudo apt-get install --reinstall -d `apt-cache depends bbb-html5 | grep depends | cut -d: f2 |tr -d "<>"`
 
+ENTRYPOINT ["/lib/systemd/systemd"]
+CMD ["/bin/bash", "-c", "exec /sbin/init --log-target=journal 3>&1"]
