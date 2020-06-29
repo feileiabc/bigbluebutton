@@ -30,7 +30,7 @@ ADD mod/tomcat7 /etc/init.d/tomcat7
 RUN chmod +x /etc/init.d/tomcat7
 
 RUN sudo apt install  -y ruby
-RUN gem install  -y bundler:1.16.1
+RUN gem install   bundler:1.16.1
 
 # -- Install BigBlueButton
 RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
